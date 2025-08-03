@@ -1,11 +1,10 @@
 services:
   - type: web
-    name: portfolio-backend
+    name: portfolio-api
     env: node
     plan: free
-    buildCommand: npm install
-    startCommand: node server.js
-    envVars:
-      - key: PORT
-        value: 10000 # Render will set this automatically, but you can override
+    buildCommand: cd backend && npm install
+    startCommand: cd backend && npm start
     autoDeploy: true
+    branch: main
+    rootDir: backend
