@@ -1,0 +1,126 @@
+{
+  "about": {
+    "txt": [
+      "I’m a developer passionate about crafting accessible, pixel-perfect user interfaces that blend thoughtful design with robust engineering. My favorite work lies at the intersection of design and development, creating experiences that not only look great but are meticulously built for performance and usability.",
+      "Currently, I'm a Senior Front-End Engineer at #a{Klaviyo}, specializing in accessibility. I contribute to the creation and maintenance of UI components that power Klaviyo’s frontend, ensuring our platform meets web accessibility standards and best practices to deliver an inclusive user experience.",
+      "In the past, I've had the opportunity to develop software across a variety of settings — from #a{advertising agencies} and #a{large corporations} to #a{start-ups} and #a{small digital product studios}. Additionally, I also released a #a{comprehensive video course} a few years ago, guiding learners through building a web app with the Spotify API.",
+      "In my spare time, I’m usually climbing, reading, hanging out with my wife and two cats, or running around Hyrule searching for Koroks."
+    ],
+    "link": {
+      "Klaviyo": "https://www.klaviyo.com/",
+      "advertising agencies": "https://us.mullenlowe.com/",
+      "large corporations": "https://www.apple.com/apple-music/",
+      "start-ups": "https://starry.com/",
+      "small digital product studios": "https://upstatement.com/",
+      "comprehensive video course": "https://www.newline.co/courses/build-a-spotify-connected-app"
+    }
+  },
+  "footer": {
+    "txt": [
+      "Loosely designed in #a{Figma} and coded in #a{Visual Studio Code} by yours truly. Built with #a{Next.js} and #a{Tailwind CSS}, deployed with #a{Vercel}. All text is set in the #a{Inter} typeface."
+    ],
+    "link": {
+      "Figma": "https://www.figma.com/",
+      "Visual Studio Code": "https://code.visualstudio.com/",
+      "Next.js": "https://nextjs.org/",
+      "Tailwind CSS": "https://tailwindcss.com/",
+      "Vercel": "https://vercel.com/",
+      "Inter": "https://rsms.me/inter/"
+    }
+  },
+  "experience": {
+    "cards": [
+      {
+        "dates": "02 Feb - 02 Aug , 2025 ",
+        "role": "Full Stack Automation Developer Intern",
+        "company": "Listing Bot",
+        "companyLink": "https://listingbot.in/",
+        "desc": "Automation Developer Intern · [Your Company Name] Develop and automate full-stack web applications using Python, Flask, React, and JavaScript to streamline software workflows and enhance system efficiency. Collaborate with cross-functional teams to design, build, and deploy production-ready platforms integrated with automation features. Apply best practices in coding, testing, and documentation, ensuring scalable and maintainable solutions that optimize processes and deliver a seamless user experience.",
+        "tags": [
+          "Python",
+          "Flask",
+          "React",
+          "JavaScript"
+        ],
+        "pinLinks": {
+          "Android App": "",
+          "Screen Time": ""
+        }
+      }
+    ],
+    "links": {
+      "label": "Resume",
+      "src": "./resume"
+    }
+  },
+  "project": {
+    "cards": [
+      {
+        "date": "02 Feb 2025 ",
+        "Title": "website Shipping ",
+        "projectLink": "https://listingbot.in/",
+        "desc": "Automation Developer Intern · [Your Company Name] Develop and automate full-stack web applications using Python, Flask, React, and JavaScript to streamline software workflows and enhance system efficiency.",
+        "tags": [
+          "Python",
+          "Flask",
+          "React",
+          "JavaScript"
+        ],
+        "pinLinks": {},
+        "img": "https://brittanychiang.com/_next/image?url=%2Fimages%2Fprojects%2Fcourse-card.png&w=640&q=75"
+      }
+    ],
+    "links": {
+      "label": "Project Archive",
+      "src": "./resume"
+    },
+    "limit": 2
+  },
+  "section": {
+    "cards": [
+      {
+        "date": "02 Feb 2025 ",
+        "Title": "website Shipping ",
+        "projectLink": "https://listingbot.in/",
+        "desc": "Automation Developer Intern · [Your Company Name] Develop and automate full-stack web applications using Python, Flask, React, and JavaScript to streamline software workflows and enhance system efficiency.",
+        "tags": [
+          "Python",
+          "Flask",
+          "React",
+          "JavaScript"
+        ],
+        "pinLinks": {},
+        "img": "https://brittanychiang.com/_next/image?url=%2Fimages%2Fprojects%2Fcourse-card.png&w=640&q=75"
+      }
+    ],
+    "links": {
+      "label": "Project Archive",
+      "src": "./resume"
+    }
+  },
+  "header": {
+    "name": "Meet Agarwals",
+    "role": "AI Automation Engineer",
+    "desc": "I make sustainable and efficient solution for business needs to automate the task using python",
+    "skills": [
+      "Python",
+      "JS",
+      "HTML",
+      "CSS"
+    ],
+    "icons": {
+      "github": {
+        "link": "https://github.com/meetagarwal",
+        "iconSrc": "faGithub"
+      },
+      "instagram": {
+        "link": "https://instagram.com/meetagarwal",
+        "iconSrc": "faLinkedin"
+      },
+      "linkedin": {
+        "link": "https://linkedin.com/in/meetagarwal",
+        "iconSrc": "faInstagram"
+      }
+    }
+  }
+}

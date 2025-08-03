@@ -1,0 +1,91 @@
+{
+  "header": {
+    "name": "demo bhai",
+    "role": "demodemo",
+    "desc": "I'm a developer passionate about creating amazing digital experiences.",
+    "skills": [
+      "JavaScript",
+      "React",
+      "Node.js"
+    ],
+    "icons": {
+      "github": {
+        "link": "https://github.com/yourusername",
+        "iconSrc": "faGithub"
+      },
+      "linkedin": {
+        "link": "https://linkedin.com/in/yourusername",
+        "iconSrc": "faLinkedin"
+      }
+    }
+  },
+  "about": {
+    "txt": [
+      "I'm a developer passionate about crafting accessible, pixel-perfect user interfaces that blend thoughtful design with robust engineering.",
+      "Currently, I'm working on exciting projects and always looking for new opportunities to learn and grow."
+    ],
+    "link": {
+      "GitHub": "https://github.com/yourusername",
+      "LinkedIn": "https://linkedin.com/in/yourusername"
+    }
+  },
+  "experience": {
+    "cards": [
+      {
+        "dates": "Jan 2024 - Present",
+        "role": "Software Developer",
+        "company": "Your Company",
+        "companyLink": "https://yourcompany.com",
+        "desc": "Working on exciting projects and contributing to the team's success.",
+        "tags": [
+          "JavaScript",
+          "React",
+          "Node.js"
+        ],
+        "pinLinks": {}
+      }
+    ],
+    "links": {
+      "label": "Resume",
+      "src": "./resume"
+    }
+  },
+  "project": {
+    "cards": [
+      {
+        "date": "Dec 2024",
+        "Title": "Portfolio Website",
+        "projectLink": "https://yourportfolio.com",
+        "desc": "A beautiful portfolio website built with React and modern web technologies.",
+        "tags": [
+          "React",
+          "JavaScript",
+          "CSS"
+        ],
+        "pinLinks": {},
+        "img": "https://via.placeholder.com/400x200?text=Project+Image"
+      }
+    ],
+    "links": {
+      "label": "View All Projects",
+      "src": "./projects"
+    },
+    "limit": 2
+  },
+  "section": {
+    "cards": [],
+    "links": {
+      "label": "More Work",
+      "src": "./more"
+    }
+  },
+  "footer": {
+    "txt": [
+      "Designed and built with ❤️ using React and Tailwind CSS."
+    ],
+    "link": {
+      "React": "https://reactjs.org/",
+      "Tailwind CSS": "https://tailwindcss.com/"
+    }
+  }
+}
