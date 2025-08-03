@@ -1,91 +1,111 @@
 import { useState } from 'react';
-import { RecaptchaVerifier, signInWithPhoneNumber, signInWithCredential } from 'firebase/auth';
+import { signInWithEmailAndPassword, createUserWithEmailAndPassword, sendPasswordResetEmail } from 'firebase/auth';
 import { auth } from '../firebase';
 
 const Login = ({ onLoginSuccess }) => {
-  const [phoneNumber, setPhoneNumber] = useState('');
-  const [otp, setOtp] = useState('');
-  const [verificationId, setVerificationId] = useState('');
-  const [step, setStep] = useState('phone'); // 'phone' or 'otp'
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [isSignUp, setIsSignUp] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [resetEmailSent, setResetEmailSent] = useState(false);
 
-  // Initialize reCAPTCHA
-  const initializeRecaptcha = () => {
-    if (!window.recaptchaVerifier) {
-      window.recaptchaVerifier = new RecaptchaVerifier(auth, 'recaptcha-container', {
-        'size': 'normal',
-        'callback': (response) => {
-          // reCAPTCHA solved, allow sending SMS
-          console.log('reCAPTCHA verified');
-        },
-        'expired-callback': () => {
-          // Response expired. Ask user to solve reCAPTCHA again
-          setError('reCAPTCHA expired. Please try again.');
-        }
-      });
-    }
-  };
-
-  const handleSendOTP = async (e) => {
+  const handleSignIn = async (e) => {
     e.preventDefault();
     setLoading(true);
     setError('');
 
     try {
-      // Initialize reCAPTCHA
-      initializeRecaptcha();
-
-      // Format phone number to international format
-      const formattedPhone = phoneNumber.startsWith('+') ? phoneNumber : `+91${phoneNumber}`;
-
-      // Send OTP
-      const confirmationResult = await signInWithPhoneNumber(auth, formattedPhone, window.recaptchaVerifier);
-      setVerificationId(confirmationResult.verificationId);
-      setStep('otp');
-    } catch (error) {
-      console.error('Error sending OTP:', error);
-      setError(error.message);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleVerifyOTP = async (e) => {
-    e.preventDefault();
-    setLoading(true);
-    setError('');
-
-    try {
-      // Import the function dynamically to avoid issues
-      const { PhoneAuthProvider } = await import('firebase/auth');
-      const credentialResult = PhoneAuthProvider.credential(verificationId, otp);
-      
-      // Sign in with credential
-      await signInWithCredential(auth, credentialResult);
-      
-      // Login successful
+      await signInWithEmailAndPassword(auth, email, password);
       onLoginSuccess();
     } catch (error) {
-      console.error('Error verifying OTP:', error);
-      setError('Invalid OTP. Please try again.');
+      console.error('Error signing in:', error);
+      setError(getErrorMessage(error.code));
     } finally {
       setLoading(false);
     }
   };
 
-  const handleBackToPhone = () => {
-    setStep('phone');
-    setOtp('');
+  const handleSignUp = async (e) => {
+    e.preventDefault();
+    setLoading(true);
     setError('');
+
+    if (password !== confirmPassword) {
+      setError('Passwords do not match');
+      setLoading(false);
+      return;
+    }
+
+    if (password.length < 6) {
+      setError('Password must be at least 6 characters long');
+      setLoading(false);
+      return;
+    }
+
+    try {
+      await createUserWithEmailAndPassword(auth, email, password);
+      onLoginSuccess();
+    } catch (error) {
+      console.error('Error signing up:', error);
+      setError(getErrorMessage(error.code));
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleForgotPassword = async () => {
+    if (!email) {
+      setError('Please enter your email address first');
+      return;
+    }
+
+    setLoading(true);
+    setError('');
+
+    try {
+      await sendPasswordResetEmail(auth, email);
+      setResetEmailSent(true);
+    } catch (error) {
+      console.error('Error sending reset email:', error);
+      setError(getErrorMessage(error.code));
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const getErrorMessage = (errorCode) => {
+    switch (errorCode) {
+      case 'auth/user-not-found':
+        return 'No account found with this email address';
+      case 'auth/wrong-password':
+        return 'Incorrect password';
+      case 'auth/email-already-in-use':
+        return 'An account with this email already exists';
+      case 'auth/weak-password':
+        return 'Password is too weak';
+      case 'auth/invalid-email':
+        return 'Invalid email address';
+      case 'auth/too-many-requests':
+        return 'Too many failed attempts. Please try again later';
+      default:
+        return 'An error occurred. Please try again';
+    }
+  };
+
+  const toggleMode = () => {
+    setIsSignUp(!isSignUp);
+    setError('');
+    setResetEmailSent(false);
   };
 
   return (
     <div className="min-h-screen bg-slate-900 flex items-center justify-center px-4">
       <div className="max-w-md w-full bg-slate-800 rounded-lg shadow-xl p-8">
         <div className="text-center mb-8">
-          <h2 className="text-3xl font-bold text-white mb-2">Welcome Back</h2>
-          <p className="text-slate-400">Sign in to your portfolio account</p>
+          <h2 className="text-3xl font-bold text-white mb-2">{isSignUp ? 'Sign Up' : 'Sign In'}</h2>
+          <p className="text-slate-400">{isSignUp ? 'Create an account' : 'Sign in to your account'}</p>
         </div>
 
         {error && (
@@ -94,78 +114,97 @@ const Login = ({ onLoginSuccess }) => {
           </div>
         )}
 
-        {step === 'phone' ? (
-          <form onSubmit={handleSendOTP} className="space-y-6">
+        {resetEmailSent && (
+          <div className="mb-4 p-3 bg-green-500/10 border border-green-500/20 rounded-lg">
+            <p className="text-green-400 text-sm">Password reset email sent! Check your inbox.</p>
+          </div>
+        )}
+
+        <form onSubmit={isSignUp ? handleSignUp : handleSignIn} className="space-y-6">
+          <div>
+            <label htmlFor="email" className="block text-sm font-medium text-slate-300 mb-2">
+              Email Address
+            </label>
+            <input
+              type="email"
+              id="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="Enter your email address"
+              className="w-full px-4 py-3 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              required
+            />
+          </div>
+
+          <div>
+            <label htmlFor="password" className="block text-sm font-medium text-slate-300 mb-2">
+              Password
+            </label>
+            <input
+              type="password"
+              id="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              placeholder="Enter your password"
+              className="w-full px-4 py-3 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              required
+            />
+          </div>
+
+          {isSignUp && (
             <div>
-              <label htmlFor="phone" className="block text-sm font-medium text-slate-300 mb-2">
-                Phone Number
+              <label htmlFor="confirmPassword" className="block text-sm font-medium text-slate-300 mb-2">
+                Confirm Password
               </label>
               <input
-                type="tel"
-                id="phone"
-                value={phoneNumber}
-                onChange={(e) => setPhoneNumber(e.target.value)}
-                placeholder="Enter your phone number"
+                type="password"
+                id="confirmPassword"
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                placeholder="Confirm your password"
                 className="w-full px-4 py-3 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 required
               />
-              <p className="text-xs text-slate-500 mt-1">
-                We'll send you a verification code via SMS
-              </p>
             </div>
+          )}
 
-            {/* reCAPTCHA container */}
-            <div id="recaptcha-container" className="flex justify-center"></div>
+          <button
+            type="submit"
+            disabled={loading}
+            className="w-full bg-blue-600 text-white py-3 px-4 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-slate-800 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+          >
+            {loading ? (isSignUp ? 'Creating Account...' : 'Signing In...') : (isSignUp ? 'Sign Up' : 'Sign In')}
+          </button>
+        </form>
 
-            <button
-              type="submit"
-              disabled={loading}
-              className="w-full bg-blue-600 text-white py-3 px-4 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-slate-800 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-            >
-              {loading ? 'Sending OTP...' : 'Send OTP'}
-            </button>
-          </form>
-        ) : (
-          <form onSubmit={handleVerifyOTP} className="space-y-6">
-            <div>
-              <label htmlFor="otp" className="block text-sm font-medium text-slate-300 mb-2">
-                Verification Code
-              </label>
-              <input
-                type="text"
-                id="otp"
-                value={otp}
-                onChange={(e) => setOtp(e.target.value)}
-                placeholder="Enter 6-digit code"
-                maxLength="6"
-                className="w-full px-4 py-3 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-center text-lg tracking-widest"
-                required
-              />
-              <p className="text-xs text-slate-500 mt-1">
-                Enter the 6-digit code sent to {phoneNumber}
-              </p>
-            </div>
-
-            <button
-              type="submit"
-              disabled={loading}
-              className="w-full bg-blue-600 text-white py-3 px-4 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-slate-800 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-            >
-              {loading ? 'Verifying...' : 'Verify OTP'}
-            </button>
-
+        {!isSignUp && (
+          <div className="mt-4 text-center">
             <button
               type="button"
-              onClick={handleBackToPhone}
-              className="w-full text-slate-400 hover:text-white transition-colors"
+              onClick={handleForgotPassword}
+              className="text-blue-400 hover:text-blue-300 text-sm transition-colors"
+              disabled={loading}
             >
-              ← Back to phone number
+              Forgot your password?
             </button>
-          </form>
+          </div>
         )}
+
+        <div className="mt-6 text-center">
+          <p className="text-slate-400 text-sm">
+            {isSignUp ? 'Already have an account?' : "Don't have an account?"}
+            <button
+              type="button"
+              onClick={toggleMode}
+              className="ml-2 text-blue-400 hover:text-blue-300 transition-colors"
+            >
+              {isSignUp ? 'Sign In' : 'Sign Up'}
+            </button>
+          </p>
+        </div>
       </div>
     </div>
   );
 };
 
-export default Login; 
+export default Login;
