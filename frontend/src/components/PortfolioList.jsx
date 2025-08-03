@@ -7,7 +7,8 @@ const PortfolioList = ({ isAdminMode = false }) => {
 
   const fetchPortfolios = async () => {
     try {
-      const response = await fetch('http://localhost:5000/api/portfolios');
+      const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+      const response = await fetch(`${API_BASE_URL}/api/portfolios`);
       
       if (!response.ok) {
         throw new Error('Failed to fetch portfolios');
@@ -32,7 +33,7 @@ const PortfolioList = ({ isAdminMode = false }) => {
     }
 
     try {
-      const response = await fetch(`http://localhost:5000/api/portfolio/${portfolioId}`, {
+      const response = await fetch(`${API_BASE_URL}/api/portfolio/${portfolioId}`, {
         method: 'DELETE',
       });
 
