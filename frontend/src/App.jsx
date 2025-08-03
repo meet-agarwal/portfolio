@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 import Header from './components/Header';
 import About from './components/About';
 import Section from './components/Section';
@@ -44,7 +45,7 @@ function AppContent() {
           return;
         }
         
-        const response = await fetch(`http://localhost:5000/api/portfolio/${portfolioId}`);
+        const response = await fetch(`${API_BASE_URL}/api/portfolio/${portfolioId}`);
         
         if (!response.ok) {
           throw new Error('Portfolio not found');
@@ -69,7 +70,7 @@ function AppContent() {
   const handleSavePortfolio = async (updatedData) => {
     try {
       const portfolioId = getPortfolioId();
-      const response = await fetch(`http://localhost:5000/api/portfolio/${portfolioId}`, {
+      const response = await fetch(`${API_BASE_URL}/api/portfolio/${portfolioId}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
