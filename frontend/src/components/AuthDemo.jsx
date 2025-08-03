@@ -16,7 +16,7 @@ const AuthDemo = () => {
     <div className="bg-slate-800 rounded-lg p-6 mb-6">
       <h3 className="text-xl font-semibold text-white mb-4">Welcome!</h3>
       <div className="space-y-2 text-slate-300">
-        <p><strong>Phone:</strong> {user?.phoneNumber || 'N/A'}</p>
+        <p><strong>Email:</strong> {user?.email || 'N/A'}</p>
         <p><strong>User ID:</strong> {user?.uid || 'N/A'}</p>
         <p><strong>Email Verified:</strong> {user?.emailVerified ? 'Yes' : 'No'}</p>
         <p><strong>Last Sign In:</strong> {user?.metadata?.lastSignInTime ? new Date(user.metadata.lastSignInTime).toLocaleString() : 'N/A'}</p>
@@ -31,4 +31,4 @@ const AuthDemo = () => {
   );
 };
 
-export default AuthDemo; 
+export default AuthDemo;
